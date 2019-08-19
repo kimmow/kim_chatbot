@@ -11,7 +11,11 @@ import pickle
 from tqdm import tqdm
 
 def make_split(line):
-    if re.match(r'.*([, ...?!\.,!?])$',''.join(line)):
+    if re.match(r'.*([, ...?!\.,!?])$',' '.join(line)):
         return []
     return [', ']
-        
+
+def good_line(line):
+    if len(re.findall(r'[a-zA-Z0-9]',' ').join(line))>2:
+        return False
+    return True
