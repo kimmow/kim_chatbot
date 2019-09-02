@@ -23,7 +23,7 @@ class WordSequence:
             WordSequence.PAD_TAG : WordSequence.PAD,
             WordSequence.UNK_TAG : WordSequence.UNK,
             WordSequence.START_TAG : WordSequence.START,
-            WordSequence.END_TAG : WordSequence.END,
+            WordSequence.END_TAG : WordSequence.END
         }
 
         self.fited = False
@@ -47,5 +47,44 @@ class WordSequence:
 
     def __len__(self):
         return self.size()
+
+    def fit(self,sentences,min_count=5,max_count = None,max_features =None):
+        assert not self.fited,"WordSquence只能fit一次"
+        count = {}
+        for sentence in sentences:
+            arr = list(sentence)
+            for a in arr:
+                if a not in count:
+                    count[a] = 0
+                count[a] += 1
+
+        if min_count is not None:
+            count  = {k:v for k,v in count.items() if v >= min_count}
+
+        if max_count is not None:
+            count  = {k:v for k,v in count.items() if v <= max_count}
+
+        self.dict = {
+            WordSequence.PAD_TAG: WordSequence.PAD,
+            WordSequence.UNK_TAG: WordSequence.UNK,
+            WordSequence.START_TAG: WordSequence.START,
+            WordSequence.END_TAG: WordSequence.END
+
+
+        }
+
+        if isinstance(max_features,int):
+            count = sorted(list(count.items()),key = lambda x:x[1])
+            if max_features is not None and len(count) > max_features:
+                count = count[-int(max_features):]
+            for w,_ in count:
+                self.dict[w] = len(self.dict)
+        else:
+            for w in sorted(count.keys()):
+                self.dict[w] = len(self.dict)
+
+
+        self.fited = True
+
 
 
