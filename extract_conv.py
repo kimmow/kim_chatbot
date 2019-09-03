@@ -9,6 +9,7 @@ import re
 import sys
 import pickle
 from tqdm import tqdm
+from word_sequence import WordSequence
 
 def make_split(line):
     if re.match(r'.*([,...?!\.，！？])$',' '.join(line)):
@@ -31,4 +32,18 @@ def regular(sen):
     return sen
 
 def main(limit=20,x_limit=3,y_limit=6):
+    print("extract lines")
+    fp = open("dgk_shooter_min.conv",'r',errors='ignore',encoding='utf-8')
+    groups = []
+    group = []
+    for line in tqdm(fp):
+        if line.startswith('M'):
+            line = line.replace('\n')
+            if '/' in line:
+                line = line[2:].split('/')
+            else:
+                line = list(line[2:])
+
+            line = line[:-1]
+
 
