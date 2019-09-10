@@ -49,12 +49,12 @@ def main(limit=20, x_limit=3, y_limit=6):
                 line = line[2:].split('/')
             else:
                 line = list(line[2:])
-            line = line[:-1]
+            line = line[:-1]  #对话行列表
 
-            group.append(list(regular(''.join(line))))
-        else:
+            group.append(list(regular(''.join(line)))) # 对话组
+        else: # 逐行读入，非'M'开头，一组对话结束
             if group:
-                groups.append(group)
+                groups.append(group) # 对话组列表
                 group = []
     if group:
         groups.append(group)
